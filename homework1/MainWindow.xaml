@@ -6,11 +6,20 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Name="TextBoxx" Height="437.274">
+    <Grid>
         <TextBox Name="TextBox1" Height="405" Width="170"   
    Text="{Binding Path=Textx}"   
    Margin="10,10,0,0" VerticalAlignment="Top"  
    HorizontalAlignment="Left">
         </TextBox>
+        <Slider ValueChanged="Slider_OnValueChanged" 
+                            Name="Slider"
+                            Minimum="25"
+                            Maximum="2000" Margin="428,169,16,222"/>
+        <Button Content="Start" 
+                            x:Name="ButtonStart"
+                            Height="54"
+                            Width="118"
+                            Click="Button_Click" Margin="547,217,135,163"/>
     </Grid>
 </Window>

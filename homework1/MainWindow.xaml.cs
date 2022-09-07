@@ -25,32 +25,51 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            Thread a = new(() => Fibbonachi());
+        private int Fibonachi(int value)
+        {
+            if (value is 0 or 1) return value;
 
-            a.Start();
+            return Fibonachi(value - 1) + Fibonachi(value - 2);
         }
 
 
-        public void Fibbonachi()
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            int a = 1;
-            int b = 1;
-            int res = 0;
-            for (int i = 1; i < 45; i++)
-            {
-                res = a + b;
+            ButtonStart.IsEnabled = false;
 
-                a = b;
-                b = res;
+            Thread thread = new Thread(() =>
+            {
+                for (int i = 0; i < 45; i++)
+                {
+                    int sleep = 0;
+                    var result = Fibonachi(i);
+
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
+                    {
+                        sleep = (int)Slider.Value;
+                        TextBox1.Text += $"{result}\n";
+                    }));
+
+                    if (sleep != 0)
+                        Thread.Sleep(sleep);
+                }
 
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
                 {
-                    TextBox1.Text += $"{i}: {res}\n";
+                    ButtonStart.IsEnabled = true;
                 }));
+            });
 
-                Thread.Sleep(200);
-            }
+            thread.IsBackground = true;
+
+            thread.Start();
+        }
+
+        private void Slider_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Console.WriteLine(Slider.Value);
         }
 
     }
